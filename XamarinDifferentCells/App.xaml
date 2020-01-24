@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:XamarinDifferentCells" mc:Ignorable="d" x:Class="XamarinDifferentCells.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:Int32 x:Key="CellMargin">20</x:Int32>
+
+            <DataTemplate x:Key="ButtonTemplate">
+                <ViewCell>
+                    <StackLayout Margin="{ StaticResource CellMargin }">
+                        <Button Text="{ Binding Title }"
+                            Command="{ Binding Command }"
+                            BackgroundColor="Blue"
+                            TextColor="White"
+                            HeightRequest="50"
+                            Padding="10"
+                            HorizontalOptions="Center"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="LabelTemplate">
+                <ViewCell>
+                    <StackLayout Margin="{ StaticResource CellMargin }">
+                        <Label Text="{ Binding Text }"
+                           HorizontalOptions="CenterAndExpand"
+                           HorizontalTextAlignment="Center"
+                           FontSize="25"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ImageTemplate">
+                <ViewCell>
+                    <StackLayout Margin="{ StaticResource CellMargin }">
+                        <Frame CornerRadius="10" Margin="0" Padding="0" IsClippedToBounds="True">
+                            <Image Source="{ Binding UrlString }"
+                           Aspect="AspectFit"
+                           HorizontalOptions="CenterAndExpand"/>
+                        </Frame>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SwitchTemplate">
+                <ViewCell>
+                    <StackLayout Margin="{ StaticResource CellMargin }">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="30*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30*"/>
+                                <RowDefinition Height="70*"/>
+                            </Grid.RowDefinitions>
+
+                        <Label Text="Switch button enabled"
+                               HorizontalOptions="CenterAndExpand"
+                               HorizontalTextAlignment="Start"
+                               FontSize="20"
+                               Grid.Row="0"
+                               Grid.Column="0"/>
+
+                        <Switch OnColor="Green"
+                                x:Name="ButtonSwitch"
+                                ThumbColor="White"
+                                IsToggled="False"
+                                HorizontalOptions="End"
+                                Grid.Row="0"
+                                Grid.Column="1"/>
+
+                        <Button Text="Press Me!"
+                                TextColor="Green"
+                                BorderColor="Green"
+                                BorderWidth="2"
+                                Padding="10"
+                                Margin="20"
+                                HorizontalOptions="FillAndExpand"
+                                IsEnabled="{Binding Source={ x:Reference ButtonSwitch }, Path=IsToggled}"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2">
+                                <Button.Style>
+                                    <!-- Use basedOn to reference pre-defined style in Static resources -->
+                                    <Style TargetType="Button">
+                                        <Style.Triggers>
+                                            <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                                <Setter Property="BorderColor" Value="LightGray"/>
+                                                <Setter Property="BorderWidth" Value="1"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                        </Grid>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <local:MyDataTemplateSelector x:Key="MyDataTemplateSelector"
+            ButtonTemplate="{StaticResource ButtonTemplate}"
+            LabelTemplate="{StaticResource LabelTemplate}"
+            ImageTemplate="{StaticResource ImageTemplate}"
+            SwitchTemplate="{ StaticResource SwitchTemplate }"/>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
